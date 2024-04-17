@@ -1,0 +1,107 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Pragati+Narrow:wght@400;700&display=swap');
+
+.task-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+
+
+    body {
+        height: 100vh; /* Ensure full viewport height */
+        margin: 0; /* Remove default margin */
+background-color:   #6712eb;;
+        font-family: "Poppins", sans-serif;
+        font-weight: 100;
+        font-style: normal;
+    
+
+        background-size: cover; /* Ensure gradient covers entire body */
+        background-repeat: no-repeat;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+    }
+    
+
+
+
+
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #ffffff6e;
+    border-radius: 30px;
+    box-shadow: 10 10 40px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(20px);
+    border: 1px solid white;
+}
+
+input[type="text"] {
+    width: 70%;
+    padding: 10px;
+    margin-right: 10px;
+  
+}
+input{
+    border-radius: 20px;
+    border: none;
+    background-color: #f4f4f400;
+    color: white;
+    outline: none;
+    border: 1px solid white;
+}
+input::placeholder{
+    color: white;
+    
+}
+button {
+    padding: 10px 20px;
+
+    border: none;
+    cursor: pointer;
+    border-radius: 20px;
+    background-color: #7D17D6;
+    color: white;
+}
+
+button:hover {
+    background-color: #ffffff;
+    color: black;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+  
+
+}
+
+.delete-btn {
+ 
+    padding: 5px 10px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    margin-right: 50px;
+    border-radius: 20px;
+    width: 90px;
+ 
+   
+}
+.delete-btn button{
+    list-style: none;
+}
+.delete-btn button:hover{
+    border-color: black;
+    color: #7D17D6;
+}

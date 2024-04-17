@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Progress</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-image: linear-gradient(to right top, #8b72b9, #8461c7, #7c4dd4, #7237e0, #6712eb);
+      height: 100vh;
+      color: black;
+      max-height: 100vh;
+    }
+    .container {
+      max-width: 900px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: rgba(255, 255, 255, 0.389);
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+    }
+    .progress-bar {
+      width: 100%;
+      background-color: #e0e0e0;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+    .progress-bar-inner {
+      height: 20px;
+      border-radius: 10px;
+      background-color:#6712eb;
+      transition: width 0.3s ease-in-out;
+    }
+    .section {
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+    }
+    .section > div {
+      flex: 1;
+      height: auto;
+      padding: 20px;
+      background-color: rgba(255, 255, 255, 0.8);
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+    }
+    h2 {
+      margin-bottom: 10px;
+    }
+    .task {
+      margin-bottom: 10px;
+    }
+
+    checkbox{
+      accent-color: #6712eb;;
+    }
+    .add-task-button {
+      background-color:#6712eb;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 5px 10px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .add-task-button:hover {
+      background-color: #6b1c76;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Student Progress</h1>
+  
+  <div class="progress-bar">
+    <div class="progress-bar-inner" style="width: 60%;"></div>
+  </div>
+  
+  <div class="section">
+    <div class="assignments">
+      <h2>Assignments</h2>
+      <div class="task">Assignment 1 <input type="checkbox" checked onchange="updateProgress(this)"></div>
+      <div class="task">Assignment 2 <input type="checkbox" onchange="updateProgress(this)"></div>
+      <div class="task">Assignment 3 <input type="checkbox" checked onchange="updateProgress(this)"></div>
+      <button class="add-task-button" onclick="addTask('Assignments')">Add Task</button>
+    </div>
+    <div class="classes">
+      <h2>Classes</h2>
+      <div class="task">Class 1 <input type="checkbox" checked onchange="updateProgress(this)"></div>
+      <div class="task">Class 2 <input type="checkbox" onchange="updateProgress(this)"></div>
+      <div class="task">Class 3 <input type="checkbox" onchange="updateProgress(this)"></div>
+      <button class="add-task-button" onclick="addTask('Classes')">Add Task</button>
+    </div>
+    <div class="nearby-seminars">
+      <h2>Nearby Seminars</h2>
+      <div class="task">Seminar 1 <input type="checkbox" onchange="updateProgress(this)"></div>
+      <div class="task">Seminar 2 <input type="checkbox" checked onchange="updateProgress(this)"></div>
+      <div class="task">Seminar 3 <input type="checkbox" onchange="updateProgress(this)"></div>
+      <button class="add-task-button" onclick="addTask('Nearby Seminars')">Add Task</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  function updateProgress(checkbox) {
+    const progressBar = document.querySelector('.progress-bar-inner');
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    const checkedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
+    const totalCount = checkboxes.length;
+    const progress = (checkedCount / totalCount) * 100;
+    progressBar.style.width = progress + '%';
+  }
+
+  function addTask(section) {
+    const taskName = prompt('Enter task name:');
+    if (taskName) {
+      const sectionDiv = document.querySelector('.' + section.toLowerCase());
+      const taskCount = sectionDiv.querySelectorAll('.task').length;
+      const newTask = document.createElement('div');
+      newTask.classList.add('task');
+      newTask.innerHTML = `${taskName} <input type="checkbox" onchange="updateProgress(this)">`;
+      sectionDiv.insertBefore(newTask, sectionDiv.querySelector('button'));
+    }
+  }
+</script>
+
+</body>
+</html>

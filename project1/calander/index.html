@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calendar</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color:#6712eb;
+      height: 100vh;
+      background-size: cover;
+    }
+    .container {
+      max-width: 600px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: rgba(255, 255, 255, 0.385);
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      padding: 10px;
+      text-align: center;
+    }
+    th {
+      background-color:  #6107e7;
+    }
+    td.today {
+      background-color: #6712eb;
+      color: white;
+    }
+    td.selected {
+      background-color: #a675de;
+      color: white;
+    }
+    td.selected:hover {
+      background-color: #8c4aa3;
+    }
+    .navigation-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    button {
+      background-color:     #6712eb;
+      color: white;
+      border: none;
+      border-radius: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color:   #6712eb;
+    }
+    .date-search {
+      margin-bottom: 20px;
+      display: flex;
+    }
+    .date-search input[type="text"] {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+      margin-right: 10px;
+    }
+    .date-search button {
+      padding: 10px 20px;
+      border-radius: 5px;
+      background-color:   #6712eb;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      border-radius: 20px;
+    }
+    .date-search button:hover {
+      background-color: #6b1c76;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="date-search">
+    <input type="text" id="dateInput" placeholder="Enter a date (MM/DD/YYYY)">
+    <button onclick="searchDate()">Search</button>
+  </div>
+
+  <div class="navigation-buttons">
+    <button onclick="previousMonth()">Previous Month</button>
+    <button onclick="nextMonth()">Next Month</button>
+    <button onclick="previousYear()">Previous Year</button>
+    <button onclick="nextYear()">Next Year</button>
+  </div>
+
+  <h2 id="month-year"></h2>
+
+  <table id="calendar">
+    <thead>
+      <tr>
+        <th>Sun</th>
+        <th>Mon</th>
+        <th>Tue</th>
+        <th>Wed</th>
+        <th>Thu</th>
+        <th>Fri</th>
+        <th>Sat</th>
+      </tr>
+    </thead>
+    <tbody id="calendar-body">
+    </tbody>
+  </table>
+</div>
+
+<script>
+  let currentYear, currentMonth, selectedDate;
+
+  function generateCalendar(year, month) {
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const firstDayOfMonth = new Date(year, month, 1).getDay();
+    
+    const calendarBody = document.getElementById("calendar-body");
+    const monthYearHeader = document.getElementById("month-year");
+    monthYearHeader.textContent = new Date(year, month).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+
+    let date = 1;
+    let html = "";
+
+    for (let i = 0; i < 6; i++) {
+      let row = "<tr>";
+      for (let j = 0; j < 7; j++) {
+        if ((i === 0 && j < firstDayOfMonth) || date > daysInMonth) {
+          row += "<td></td>";
+        } else {
+          const isToday = date === (new Date()).getDate() && year === (new Date()).getFullYear() && month === (new Date()).getMonth();
+          const isSelected = selectedDate && date === selectedDate.getDate() && year === selectedDate.getFullYear() && month === selectedDate.getMonth();
+          row += `<td class="${isToday ? 'today' : ''} ${isSelected ? 'selected' : ''}" onclick="selectDate(${year}, ${month}, ${date})">${date}</td>`;
+          date++;
+        }
+      }
+      row += "</tr>";
+      html += row;
+      if (date > daysInMonth) break;
+    }
+
+    calendarBody.innerHTML = html;
+  }
+
+  function selectDate(year, month, date) {
+    selectedDate = new Date(year, month, date);
+    generateCalendar(year, month);
+  }
+
+  function searchDate() {
+    const dateInput = document.getElementById("dateInput").value;
+    const parts = dateInput.split("/");
+    if (parts.length === 3) {
+      const month = parseInt(parts[0]) - 1; // months are zero-based
+      const day = parseInt(parts[1]);
+      const year = parseInt(parts[2]);
+      if (!isNaN(month) && !isNaN(day) && !isNaN(year)) {
+        selectedDate = new Date(year, month, day);
+        currentYear = year;
+        currentMonth = month;
+        generateCalendar(year, month);
+      } else {
+        alert("Please enter a valid date (MM/DD/YYYY)");
+      }
+    } else {
+      alert("Please enter a valid date (MM/DD/YYYY)");
+    }
+  }
+
+  function previousMonth() {
+    currentMonth--;
+    if (currentMonth < 0) {
+      currentMonth = 11;
+      currentYear--;
+    }
+    generateCalendar(currentYear, currentMonth);
+  }
+
+  function nextMonth() {
+    currentMonth++;
+    if (currentMonth > 11) {
+      currentMonth = 0;
+      currentYear++;
+    }
+    generateCalendar(currentYear, currentMonth);
+  }
+
+  function previousYear() {
+    currentYear--;
+    generateCalendar(currentYear, currentMonth);
+  }
+
+  function nextYear() {
+    currentYear++;
+    generateCalendar(currentYear, currentMonth);
+  }
+
+  // Initialize calendar with current year and month
+  const now = new Date();
+  currentYear = now.getFullYear();
+  currentMonth = now.getMonth();
+  selectedDate = now;
+  generateCalendar(currentYear, currentMonth);
+</script>
+
+</body>
+</html>
